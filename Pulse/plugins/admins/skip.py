@@ -66,16 +66,16 @@ async def skip(cli, message: Message, _, chat_id):
                                 if not check:
                                     try:
                                         await message.reply_text(
-                                        text=_["admin_6"].format(
-                                            message.from_user.mention,
-                                            message.chat.title,
-                                        ),
-                                        reply_markup=close_markup(_),
-                                    )
-                                    await Sagar.stop_stream(chat_id)
-                                except:
-                                    return
-                                break
+                                            text=_["admin_6"].format(
+                                                message.from_user.mention,
+                                                message.chat.title,
+                                            ),
+                                            reply_markup=close_markup(_),
+                                        )
+                                        await Sagar.stop_stream(chat_id)
+                                    except:
+                                        return
+                                    break
                     else:
                         return await message.reply_text(_["admin_11"].format(count))
                 else:
@@ -97,14 +97,14 @@ async def skip(cli, message: Message, _, chat_id):
                 if not check:
                     await message.reply_text(
                         text=_["admin_6"].format(
-                        message.from_user.mention, message.chat.title
-                    ),
-                    reply_markup=close_markup(_),
-                )
-                try:
-                    return await Sagar.stop_stream(chat_id)
-                except:
-                    return
+                            message.from_user.mention, message.chat.title
+                        ),
+                        reply_markup=close_markup(_),
+                    )
+                    try:
+                        return await Sagar.stop_stream(chat_id)
+                    except:
+                        return
         except:
             try:
                 await message.reply_text(
