@@ -32,7 +32,7 @@ async def autoplay_cb(client, CallbackQuery):
             for row in reply_markup.inline_keyboard:
                 for btn in row:
                     if btn.callback_data and btn.callback_data.startswith("Autoplay_Toggle|"):
-                        btn.text = "𝐀ᴜᴛᴏᴘʟᴀʏ ➜ " + ("𝐎ɴ" if new_state else "𝐎ғғ")
+                        btn.text = "𝐀ᴜᴛᴏ ➜ " + ("𝐎ɴ" if new_state else "𝐎ғғ")
             
             await CallbackQuery.message.edit_reply_markup(reply_markup=reply_markup)
     except Exception as e:

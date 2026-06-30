@@ -75,7 +75,7 @@ def stream_markup_timer(_, chat_id, played, dur):
         ],
         # Row 4: Autoplay toggle
         [
-            InlineKeyboardButton(text="𝐀ᴜᴛᴏᴘʟᴀʏ ➜ " + ("𝐎ɴ" if getattr(__import__("Pulse").YouTube, "is_autoplay_on", lambda x: False)(chat_id) else "𝐎ғғ"), callback_data=f"Autoplay_Toggle|{chat_id}", style=ButtonStyle.DEFAULT)
+            InlineKeyboardButton(text="𝐀ᴜᴛᴏ ➜ " + ("𝐎ɴ" if getattr(__import__("Pulse").YouTube, "is_autoplay_on", lambda x: False)(chat_id) else "𝐎ғғ"), callback_data=f"Autoplay_Toggle|{chat_id}", style=ButtonStyle.DEFAULT)
         ],
         # Row 5: Support & Update
         [
@@ -107,7 +107,7 @@ def stream_markup(_, chat_id):
         ],
         # Row 3: Autoplay
         [
-            InlineKeyboardButton(text="𝐀ᴜᴛᴏᴘʟᴀʏ ➜ " + ("𝐎ɴ" if getattr(__import__("Pulse").YouTube, "is_autoplay_on", lambda x: False)(chat_id) else "𝐎ғғ"), callback_data=f"Autoplay_Toggle|{chat_id}", style=ButtonStyle.DEFAULT)
+            InlineKeyboardButton(text="𝐀ᴜᴛᴏ ➜ " + ("𝐎ɴ" if getattr(__import__("Pulse").YouTube, "is_autoplay_on", lambda x: False)(chat_id) else "𝐎ғғ"), callback_data=f"Autoplay_Toggle|{chat_id}", style=ButtonStyle.DEFAULT)
         ],
         # Row 4: Support
         [
