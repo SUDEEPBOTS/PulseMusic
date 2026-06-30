@@ -78,9 +78,12 @@ def stream_markup_timer(_, chat_id, played, dur):
             InlineKeyboardButton(text="✰ ᴜᴘᴅᴧᴛᴇ ✰", url=SUPPORT_CHANNEL, style=ButtonStyle.PRIMARY),
             InlineKeyboardButton(text="✰ sᴜᴘᴘᴏꝛᴛ ✰", url=SUPPORT_CHAT, style=ButtonStyle.PRIMARY)
         ],
-        # Row 4: Autoplay & Close button
+        # Row 4: Autoplay button
         [
             InlineKeyboardButton(text="𝐀ᴜᴛᴏ ➜ " + ("𝐎ɴ" if getattr(__import__("Pulse.platforms.Youtube", fromlist=["is_autoplay_on"]), "is_autoplay_on", lambda x: False)(chat_id) else "𝐎ғғ"), callback_data=f"Autoplay_Toggle|{chat_id}", style=ButtonStyle.DEFAULT),
+        ],
+        # Row 5: Close button
+        [
             InlineKeyboardButton(text=_["CLOSE_BUTTON"].lower(), callback_data="close", style=ButtonStyle.DANGER)
         ]
     ]
@@ -107,9 +110,12 @@ def stream_markup(_, chat_id):
             InlineKeyboardButton(text="✰ ᴜᴘᴅᴧᴛᴇ ✰", url=SUPPORT_CHANNEL, style=ButtonStyle.PRIMARY),
             InlineKeyboardButton(text="✰ sᴜᴘᴘᴏꝛᴛ ✰", url=SUPPORT_CHAT, style=ButtonStyle.PRIMARY)
         ],
-        # Row 4: Autoplay & Close
+        # Row 4: Autoplay
         [
             InlineKeyboardButton(text="𝐀ᴜᴛᴏ ➜ " + ("𝐎ɴ" if getattr(__import__("Pulse.platforms.Youtube", fromlist=["is_autoplay_on"]), "is_autoplay_on", lambda x: False)(chat_id) else "𝐎ғғ"), callback_data=f"Autoplay_Toggle|{chat_id}", style=ButtonStyle.DEFAULT),
+        ],
+        # Row 5: Close
+        [
             InlineKeyboardButton(text=_["CLOSE_BUTTON"].lower(), callback_data="close", style=ButtonStyle.DANGER)
         ]
     ]
