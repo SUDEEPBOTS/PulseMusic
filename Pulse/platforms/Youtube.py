@@ -31,8 +31,8 @@ from Pulse.utils.formatters import time_to_seconds
 # ═══════════════════════════════════════════════════════════════════════════════
 # CONFIG
 # ═══════════════════════════════════════════════════════════════════════════════
-FALLBACK_API_URL   = "http://localhost:8000"
-YOUR_API_URL       = "http://localhost:8000"
+FALLBACK_API_URL   = "http://music.yukiapi.site"
+YOUR_API_URL       = "http://music.yukiapi.site"
 API_URL_PASTEBIN   = None
 
 cookies_file       = "cookies/cookies.txt"
