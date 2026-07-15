@@ -7,6 +7,15 @@
 </p>
 
 <p align="center">
+  <a href="https://railway.app/template?gh_repo=SUDEEPBOTS/PulseMusic">
+    <img src="https://railway.app/button.svg" alt="Deploy on Railway">
+  </a>
+  <a href="https://heroku.com/deploy?template=https://github.com/SUDEEPBOTS/PulseMusic">
+    <img src="https://www.herokucdn.com/deploy/button.svg" alt="Deploy to Heroku">
+  </a>
+</p>
+
+<p align="center">
   <a href="https://github.com/SUDEEPBOTS/PulseMusic/stargazers"><img src="https://img.shields.io/github/stars/SUDEEPBOTS/PulseMusic?color=blue&logo=github&logoColor=white&style=for-the-badge" alt="Stars" /></a>
   <a href="https://github.com/SUDEEPBOTS/PulseMusic/network/members"> <img src="https://img.shields.io/github/forks/SUDEEPBOTS/PulseMusic?color=blue&logo=github&logoColor=white&style=for-the-badge" /></a>
   <a href="https://github.com/SUDEEPBOTS/PulseMusic/issues"> <img src="https://img.shields.io/github/issues/SUDEEPBOTS/PulseMusic?color=blue&logo=github&logoColor=white&style=for-the-badge" /></a>
