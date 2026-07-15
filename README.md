@@ -6,14 +6,7 @@
   <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=600&size=26&pause=1000&color=00FFFB&center=true&vCenter=true&width=600&lines=Welcome+to+PulseMusic+Bot;A+Super+Fast+Telegram+Music+Bot;Built+With+Pyrogram+%26+PyTgCalls;Advanced+Security+Included;Deploy+Now+on+Render+or+Heroku" alt="Typing SVG" />
 </p>
 
-<p align="center">
-  <a href="https://railway.app/template?gh_repo=SUDEEPBOTS/PulseMusic">
-    <img src="https://railway.app/button.svg" alt="Deploy on Railway">
-  </a>
-  <a href="https://heroku.com/deploy?template=https://github.com/SUDEEPBOTS/PulseMusic">
-    <img src="https://www.herokucdn.com/deploy/button.svg" alt="Deploy to Heroku">
-  </a>
-</p>
+
 
 <p align="center">
   <a href="https://github.com/SUDEEPBOTS/PulseMusic/stargazers"><img src="https://img.shields.io/github/stars/SUDEEPBOTS/PulseMusic?color=blue&logo=github&logoColor=white&style=for-the-badge" alt="Stars" /></a>
@@ -55,6 +48,10 @@
 </a>
 <a href="https://render.com/deploy?repo=https://github.com/SUDEEPBOTS/PulseMusic">
   <img src="https://img.shields.io/badge/Deploy%20to%20Render-46E3B7?style=for-the-badge&logo=render&logoColor=white" width="200" height="45"/>
+</a>
+<br>
+<a href="https://railway.app/template?gh_repo=SUDEEPBOTS/PulseMusic">
+  <img src="https://img.shields.io/badge/Deploy%20on%20Railway-131415?style=for-the-badge&logo=railway&logoColor=white" width="200" height="45"/>
 </a>
 </p>
 
