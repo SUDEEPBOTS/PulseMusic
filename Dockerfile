@@ -1,3 +1,4 @@
+#fixd
 FROM nikolaik/python-nodejs:python3.10-nodejs19
 
 RUN rm -f /etc/apt/sources.list.d/yarn.list && \
