@@ -1,0 +1,89 @@
+{
+  "name": "PulseMusic",
+  "description": "A powerful Telegram Music Bot built with Python and Pyrogram.",
+  "logo": "https://files.catbox.moe/kzcoir.jpg",
+  "keywords": [
+    "telegram",
+    "music",
+    "bot",
+    "pyrogram",
+    "python"
+  ],
+  "repository": "https://github.com/SUDEEPBOTS/PulseMusic",
+  "stack": "container",
+  "env": {
+    "API_ID": {
+      "description": "Get this value from my.telegram.org",
+      "required": true
+    },
+    "API_HASH": {
+      "description": "Get this value from my.telegram.org",
+      "required": true
+    },
+    "BOT_TOKEN": {
+      "description": "Get this from @BotFather",
+      "required": true
+    },
+    "MONGO_DB_URI": {
+      "description": "Get this from mongodb.com",
+      "required": true
+    },
+    "LOGGER_ID": {
+      "description": "Your Log Group ID, must start with -100",
+      "required": true
+    },
+    "OWNER_ID": {
+      "description": "Your Telegram User ID",
+      "required": true
+    },
+    "STRING_SESSION": {
+      "description": "Pyrogram V2 String Session",
+      "required": true
+    },
+    "HEROKU_API_KEY": {
+      "description": "Your Heroku API Key (Optional)",
+      "required": false
+    },
+    "HEROKU_APP_NAME": {
+      "description": "Your Heroku App Name (Optional)",
+      "required": false
+    },
+    "UPSTREAM_REPO": {
+      "description": "Upstream Repo URL (Optional)",
+      "required": false,
+      "value": "https://github.com/TrickBySaqib/PulseMusic"
+    },
+    "UPSTREAM_BRANCH": {
+      "description": "Upstream Repo Branch (Optional)",
+      "required": false,
+      "value": "main"
+    },
+    "SUPPORT_CHANNEL": {
+      "description": "Your Support Channel Link (Optional)",
+      "required": false,
+      "value": "https://t.me/Zcziiyy"
+    },
+    "SUPPORT_CHAT": {
+      "description": "Your Support Group Link (Optional)",
+      "required": false,
+      "value": "https://t.me/DEVTAL"
+    }
+  },
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    },
+    {
+      "url": "heroku/nodejs"
+    },
+    {
+      "url": "https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest.git"
+    }
+  ],
+  "formation": {
+    "worker": {
+      "quantity": 1,
+      "size": "eco"
+    }
+  }
+}
