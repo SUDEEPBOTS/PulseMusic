@@ -1,4 +1,4 @@
-"""
+""" added api
 YUKIMUSIC — platforms/Youtube.py
 Maintainer : HellFireDevs / Kaito
 Last fixed : 2026
