@@ -7,25 +7,7 @@ from collections import defaultdict
 from typing import Union
 
 import aiohttp
-
-try:
-    from py_yt import VideosSearch, Playlist
-except ImportError:
-    try:
-        from youtubesearchpython.__future__ import VideosSearch, Playlist
-    except ImportError:
-        VideosSearch = None
-        Playlist = None
-
-try:
-    from youtube_search import YoutubeSearch
-except ImportError:
-    YoutubeSearch = None
-
-try:
-    import yt_dlp
-except ImportError:
-    yt_dlp = None
+from py_yt import VideosSearch, Playlist
 
 API_URL = os.environ.get("MEOW_API_URL", "https://music.yukiapi.site")
 
@@ -197,80 +179,59 @@ async def _search_one(query: str) -> dict | None:
         if oembed:
             return oembed
 
-    if VideosSearch:
-        try:
-            s = VideosSearch(query, limit=1)
-            res = await s.next()
-            items = res.get("result", [])
-            if items and items[0].get("id"):
-                r = items[0]
-                thumb = (
-                    r["thumbnails"][0]["url"].split("?")[0]
-                    if r.get("thumbnails")
-                    else f"https://i.ytimg.com/vi/{r['id']}/hqdefault.jpg"
-                )
-                return {
-                    "id": r["id"],
-                    "title": r.get("title", query),
-                    "link": r.get("link", f"https://www.youtube.com/watch?v={r['id']}"),
-                    "duration": r.get("duration", "0:00"),
-                    "thumbnails": [{"url": thumb}],
-                }
-        except Exception:
-            pass
-
-    if YoutubeSearch:
-        try:
-            loop = asyncio.get_running_loop()
-            def _ytsearch():
-                return YoutubeSearch(query, max_results=1).to_dict()
-            items = await loop.run_in_executor(None, _ytsearch)
-            if items and items[0].get("id"):
-                r = items[0]
-                vid_id = r["id"]
-                thumb = f"https://i.ytimg.com/vi/{vid_id}/hqdefault.jpg"
-                return {
-                    "id": vid_id,
-                    "title": r.get("title", query),
-                    "link": f"https://www.youtube.com/watch?v={vid_id}",
-                    "duration": r.get("duration", "0:00"),
-                    "thumbnails": [{"url": thumb}],
-                }
-        except Exception:
-            pass
+    try:
+        s = VideosSearch(query, limit=1)
+        res = await s.next()
+        items = res.get("result", [])
+        if items and items[0].get("id"):
+            r = items[0]
+            thumb = (
+                r["thumbnails"][0]["url"].split("?")[0]
+                if r.get("thumbnails")
+                else f"https://i.ytimg.com/vi/{r['id']}/hqdefault.jpg"
+            )
+            return {
+                "id": r["id"],
+                "title": r.get("title", query),
+                "link": r.get("link", f"https://www.youtube.com/watch?v={r['id']}"),
+                "duration": r.get("duration", "0:00"),
+                "thumbnails": [{"url": thumb}],
+            }
+    except Exception:
+        pass
 
     vercel_results = await _search_vercel(query, limit=1)
     if vercel_results:
         return vercel_results[0]
 
-    if yt_dlp:
-        try:
-            loop = asyncio.get_running_loop()
+    try:
+        import yt_dlp
+        loop = asyncio.get_running_loop()
 
-            def _ytdlp_flat():
-                opts = {"extract_flat": True, "quiet": True, "no_warnings": True}
-                with yt_dlp.YoutubeDL(opts) as ydl:
-                    target = query if vid else f"ytsearch1:{query}"
-                    info = ydl.extract_info(target, download=False)
-                    if "entries" in info and info["entries"]:
-                        return info["entries"][0]
-                    return info
+        def _ytdlp_flat():
+            opts = {"extract_flat": True, "quiet": True, "no_warnings": True}
+            with yt_dlp.YoutubeDL(opts) as ydl:
+                target = query if vid else f"ytsearch1:{query}"
+                info = ydl.extract_info(target, download=False)
+                if "entries" in info and info["entries"]:
+                    return info["entries"][0]
+                return info
 
-            info = await loop.run_in_executor(None, _ytdlp_flat)
-            if info and info.get("id"):
-                v_id = info["id"]
-                dur_s = int(info.get("duration") or 0)
-                dur_str = f"{dur_s//60}:{dur_s%60:02d}" if dur_s else "0:00"
-                thumb = f"https://i.ytimg.com/vi/{v_id}/hqdefault.jpg"
-                return {
-                    "id": v_id,
-                    "title": info.get("title", query),
-                    "link": f"https://www.youtube.com/watch?v={v_id}",
-                    "duration": dur_str,
-                    "thumbnails": [{"url": thumb}],
-                }
-        except Exception:
-            pass
+        info = await loop.run_in_executor(None, _ytdlp_flat)
+        if info and info.get("id"):
+            v_id = info["id"]
+            dur_s = int(info.get("duration") or 0)
+            dur_str = f"{dur_s//60}:{dur_s%60:02d}" if dur_s else "0:00"
+            thumb = f"https://i.ytimg.com/vi/{v_id}/hqdefault.jpg"
+            return {
+                "id": v_id,
+                "title": info.get("title", query),
+                "link": f"https://www.youtube.com/watch?v={v_id}",
+                "duration": dur_str,
+                "thumbnails": [{"url": thumb}],
+            }
+    except Exception:
+        pass
 
     if vid:
         return {
@@ -284,31 +245,30 @@ async def _search_one(query: str) -> dict | None:
 
 
 async def _search_many(query: str, limit: int = 10) -> list[dict]:
-    if VideosSearch:
-        try:
-            s = VideosSearch(query, limit=limit)
-            res = await s.next()
-            items = res.get("result", [])
-            out = []
-            for r in items:
-                if not r.get("id"):
-                    continue
-                thumb = (
-                    r["thumbnails"][0]["url"].split("?")[0]
-                    if r.get("thumbnails")
-                    else f"https://i.ytimg.com/vi/{r['id']}/hqdefault.jpg"
-                )
-                out.append({
-                    "id": r["id"],
-                    "title": r.get("title", ""),
-                    "link": r.get("link", f"https://www.youtube.com/watch?v={r['id']}"),
-                    "duration": r.get("duration", "0:00"),
-                    "thumbnails": [{"url": thumb}],
-                })
-            if out:
-                return out
-        except Exception:
-            pass
+    try:
+        s = VideosSearch(query, limit=limit)
+        res = await s.next()
+        items = res.get("result", [])
+        out = []
+        for r in items:
+            if not r.get("id"):
+                continue
+            thumb = (
+                r["thumbnails"][0]["url"].split("?")[0]
+                if r.get("thumbnails")
+                else f"https://i.ytimg.com/vi/{r['id']}/hqdefault.jpg"
+            )
+            out.append({
+                "id": r["id"],
+                "title": r.get("title", ""),
+                "link": r.get("link", f"https://www.youtube.com/watch?v={r['id']}"),
+                "duration": r.get("duration", "0:00"),
+                "thumbnails": [{"url": thumb}],
+            })
+        if out:
+            return out
+    except Exception:
+        pass
 
     vercel_results = await _search_vercel(query, limit=limit)
     if vercel_results:
@@ -454,7 +414,8 @@ class YouTubeAPI:
             if seed_vid:
                 targets.insert(0, f"https://www.youtube.com/watch?v={seed_vid}&list={list_id}")
 
-        if yt_dlp:
+        try:
+            import yt_dlp
             for tgt in targets:
                 try:
                     loop = asyncio.get_running_loop()
@@ -475,18 +436,19 @@ class YouTubeAPI:
                         return res[:limit]
                 except Exception:
                     pass
+        except ImportError:
+            pass
 
-        if Playlist:
-            try:
-                plist = Playlist(clean)
-                while plist.hasMore():
-                    await plist.getNext()
-                    if len(plist.videos) >= limit:
-                        break
-                if plist.videos:
-                    return [v["link"] for v in plist.videos[:limit]]
-            except Exception:
-                pass
+        try:
+            plist = Playlist(clean)
+            while plist.hasMore():
+                await plist.getNext()
+                if len(plist.videos) >= limit:
+                    break
+            if plist.videos:
+                return [v["link"] for v in plist.videos[:limit]]
+        except Exception:
+            pass
         return []
 
     async def formats(self, link: str, videoid: Union[bool, str] = None):
@@ -540,29 +502,29 @@ class YouTubeAPI:
     async def related(self, vidid: str, limit: int = 10, chat_id: int = None) -> list[dict]:
         mix_url = f"https://www.youtube.com/watch?v={vidid}&list=RD{vidid}"
         candidates = []
-        if yt_dlp:
-            try:
-                loop = asyncio.get_running_loop()
+        try:
+            import yt_dlp
+            loop = asyncio.get_running_loop()
 
-                def _get_mix():
-                    opts = {"extract_flat": True, "quiet": True, "no_warnings": True, "playlistend": limit + 5}
-                    with yt_dlp.YoutubeDL(opts) as ydl:
-                        info = ydl.extract_info(mix_url, download=False) or {}
-                        return [
-                            {
-                                "vidid": e["id"],
-                                "title": e.get("title", ""),
-                                "duration": str(e.get("duration", "")),
-                                "link": f"https://www.youtube.com/watch?v={e['id']}",
-                                "thumbnail": f"https://i.ytimg.com/vi/{e['id']}/hqdefault.jpg",
-                            }
-                            for e in (info.get("entries") or [])
-                            if e and e.get("id") and e.get("id") != vidid
-                        ]
+            def _get_mix():
+                opts = {"extract_flat": True, "quiet": True, "no_warnings": True, "playlistend": limit + 5}
+                with yt_dlp.YoutubeDL(opts) as ydl:
+                    info = ydl.extract_info(mix_url, download=False) or {}
+                    return [
+                        {
+                            "vidid": e["id"],
+                            "title": e.get("title", ""),
+                            "duration": str(e.get("duration", "")),
+                            "link": f"https://www.youtube.com/watch?v={e['id']}",
+                            "thumbnail": f"https://i.ytimg.com/vi/{e['id']}/hqdefault.jpg",
+                        }
+                        for e in (info.get("entries") or [])
+                        if e and e.get("id") and e.get("id") != vidid
+                    ]
 
-                candidates = await loop.run_in_executor(None, _get_mix)
-            except Exception:
-                pass
+            candidates = await loop.run_in_executor(None, _get_mix)
+        except Exception:
+            pass
 
         if not candidates:
             candidates = await _search_many(f"songs like {vidid}", limit=limit)
