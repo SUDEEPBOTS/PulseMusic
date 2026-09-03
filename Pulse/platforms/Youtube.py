@@ -438,6 +438,44 @@ class YouTubeAPI:
             link = self.listbase + link
         clean = _clean_link(link)
 
+        list_id = None
+        if "list=" in link:
+            m = re.search(r"[?&]list=([0-9A-Za-z_-]+)", link)
+            if m:
+                list_id = m.group(1)
+
+        targets = [clean]
+        if list_id and list_id.startswith("RD"):
+            seed_vid = list_id[2:]
+            if "_" in seed_vid:
+                seed_vid = seed_vid.split("_")[-1]
+            elif len(seed_vid) >= 11:
+                seed_vid = seed_vid[:11]
+            if seed_vid:
+                targets.insert(0, f"https://www.youtube.com/watch?v={seed_vid}&list={list_id}")
+
+        if yt_dlp:
+            for tgt in targets:
+                try:
+                    loop = asyncio.get_running_loop()
+
+                    def _extract_pl(url_to_extract):
+                        opts = {"extract_flat": True, "quiet": True, "no_warnings": True, "playlistend": limit}
+                        with yt_dlp.YoutubeDL(opts) as ydl:
+                            info = ydl.extract_info(url_to_extract, download=False) or {}
+                            entries = info.get("entries") or []
+                            return [
+                                f"https://www.youtube.com/watch?v={e['id']}"
+                                for e in entries
+                                if e and e.get("id")
+                            ]
+
+                    res = await loop.run_in_executor(None, _extract_pl, tgt)
+                    if res:
+                        return res[:limit]
+                except Exception:
+                    pass
+
         if Playlist:
             try:
                 plist = Playlist(clean)
@@ -445,25 +483,8 @@ class YouTubeAPI:
                     await plist.getNext()
                     if len(plist.videos) >= limit:
                         break
-                return [v["link"] for v in plist.videos[:limit]]
-            except Exception:
-                pass
-
-        if yt_dlp:
-            try:
-                loop = asyncio.get_running_loop()
-
-                def _extract_pl():
-                    opts = {"extract_flat": True, "quiet": True, "no_warnings": True, "playlistend": limit}
-                    with yt_dlp.YoutubeDL(opts) as ydl:
-                        info = ydl.extract_info(clean, download=False)
-                        return [
-                            f"https://www.youtube.com/watch?v={e['id']}"
-                            for e in (info.get("entries") or [])
-                            if e and e.get("id")
-                        ]
-
-                return await loop.run_in_executor(None, _extract_pl)
+                if plist.videos:
+                    return [v["link"] for v in plist.videos[:limit]]
             except Exception:
                 pass
         return []
