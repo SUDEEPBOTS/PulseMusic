@@ -3,7 +3,6 @@ import os
 import random
 import re
 import urllib.parse
-from collections import defaultdict
 from typing import Union
 
 import aiohttp
@@ -52,39 +51,6 @@ def _cache_thumb(vidid: str, url: str) -> str:
         del _thumb_cache[next(iter(_thumb_cache))]
     _thumb_cache[vidid] = url
     return url
-
-
-_autoplay_enabled: dict[int, bool] = defaultdict(lambda: False)
-_autoplay_history: dict[int, set[str]] = defaultdict(set)
-_autoplay_lock: dict[int, asyncio.Lock] = {}
-
-
-def get_autoplay_lock(chat_id: int) -> asyncio.Lock:
-    if chat_id not in _autoplay_lock:
-        _autoplay_lock[chat_id] = asyncio.Lock()
-    return _autoplay_lock[chat_id]
-
-
-def is_autoplay_on(chat_id: int) -> bool:
-    return _autoplay_enabled[chat_id]
-
-
-def set_autoplay(chat_id: int, state: bool) -> None:
-    _autoplay_enabled[chat_id] = state
-    if not state:
-        _autoplay_history[chat_id].clear()
-
-
-def mark_played(chat_id: int, vidid: str) -> None:
-    hist = _autoplay_history[chat_id]
-    hist.add(vidid)
-    if len(hist) > 300:
-        for v in list(hist)[:100]:
-            hist.discard(v)
-
-
-def was_played(chat_id: int, vidid: str) -> bool:
-    return vidid in _autoplay_history[chat_id]
 
 
 def _extract_video_id(link: str) -> str | None:
@@ -498,56 +464,6 @@ class YouTubeAPI:
         vid = _extract_video_id(link) or link
         path = await download_media(vid, is_video=is_vid)
         return path, True
-
-    async def related(self, vidid: str, limit: int = 10, chat_id: int = None) -> list[dict]:
-        mix_url = f"https://www.youtube.com/watch?v={vidid}&list=RD{vidid}"
-        candidates = []
-        try:
-            import yt_dlp
-            loop = asyncio.get_running_loop()
-
-            def _get_mix():
-                opts = {"extract_flat": True, "quiet": True, "no_warnings": True, "playlistend": limit + 5}
-                with yt_dlp.YoutubeDL(opts) as ydl:
-                    info = ydl.extract_info(mix_url, download=False) or {}
-                    return [
-                        {
-                            "vidid": e["id"],
-                            "title": e.get("title", ""),
-                            "duration": str(e.get("duration", "")),
-                            "link": f"https://www.youtube.com/watch?v={e['id']}",
-                            "thumbnail": f"https://i.ytimg.com/vi/{e['id']}/hqdefault.jpg",
-                        }
-                        for e in (info.get("entries") or [])
-                        if e and e.get("id") and e.get("id") != vidid
-                    ]
-
-            candidates = await loop.run_in_executor(None, _get_mix)
-        except Exception:
-            pass
-
-        if not candidates:
-            candidates = await _search_many(f"songs like {vidid}", limit=limit)
-
-        random.shuffle(candidates)
-        if chat_id is not None:
-            fresh = [c for c in candidates if not was_played(chat_id, c["vidid"])]
-            if fresh:
-                candidates = fresh
-        return candidates[:limit]
-
-    async def autoplay_next(self, vidid: str, chat_id: int) -> dict | None:
-        lock = get_autoplay_lock(chat_id)
-        if lock.locked():
-            return None
-        async with lock:
-            tracks = await self.related(vidid, limit=10, chat_id=chat_id)
-            if not tracks:
-                return None
-            nxt = tracks[0]
-            mark_played(chat_id, nxt["vidid"])
-            asyncio.create_task(download_media(nxt["vidid"], is_video=False))
-            return nxt
 
 
 YouTube = YouTubeAPI()

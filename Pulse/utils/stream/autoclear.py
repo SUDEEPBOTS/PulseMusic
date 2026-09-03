@@ -38,27 +38,5 @@ async def auto_clean(popped):
     except:
         pass
 
-from Pulse.platforms.Youtube import is_autoplay_on
-from Pulse import YouTube
-from Pulse.misc import db
-
 async def auto_turn(chat_id, popped):
-    if not popped or "vidid" not in popped:
-        return
-    if is_autoplay_on(chat_id):
-        try:
-            nxt = await YouTube.autoplay_next(popped["vidid"], chat_id)
-            if nxt:
-                db[chat_id] = [{
-                    "file": f"vid_{nxt['vidid']}",
-                    "title": nxt["title"],
-                    "by": "Autoplay [Bot]",
-                    "chat_id": popped.get("chat_id", chat_id),
-                    "streamtype": "audio",
-                    "vidid": nxt["vidid"],
-                    "played": 0,
-                    "dur": nxt["duration_min"],
-                    "seconds": 0,
-                }]
-        except Exception:
-            pass
+    return
