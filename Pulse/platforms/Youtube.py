@@ -15,12 +15,17 @@ except ImportError:
     PyPlaylist = None
 
 try:
+    from youtube_search import YoutubeSearch
+except ImportError:
+    YoutubeSearch = None
+
+try:
     import yt_dlp
 except ImportError:
     yt_dlp = None
 
 MEOWAPI = os.environ.get("MEOWAPI") or "https://music.yukiapi.site"
-MEOWAPITOKEN = os.environ.get("MEOWAPITOKEN") or "yuki_cd4df8511e34ff8253b0981ad5995f5c"
+MEOWAPITOKEN = os.environ.get("MEOWAPITOKEN")
 DOWNLOAD_DIR = "downloads"
 
 _global_session: aiohttp.ClientSession | None = None
@@ -210,6 +215,26 @@ async def _search_one(query: str) -> dict | None:
         except Exception:
             pass
 
+    if YoutubeSearch:
+        try:
+            loop = asyncio.get_running_loop()
+            def _ytsearch():
+                return YoutubeSearch(query, max_results=1).to_dict()
+            items = await loop.run_in_executor(None, _ytsearch)
+            if items and items[0].get("id"):
+                r = items[0]
+                vid_id = r["id"]
+                thumb = f"https://i.ytimg.com/vi/{vid_id}/hqdefault.jpg"
+                return {
+                    "id": vid_id,
+                    "title": r.get("title", query),
+                    "link": f"https://www.youtube.com/watch?v={vid_id}",
+                    "duration": r.get("duration", "0:00"),
+                    "thumbnails": [{"url": thumb}],
+                }
+        except Exception:
+            pass
+
     vercel_results = await _search_vercel(query, limit=1)
     if vercel_results:
         return vercel_results[0]
@@ -289,6 +314,10 @@ async def _search_many(query: str, limit: int = 10) -> list[dict]:
 
 
 async def download_media(video_id: str, is_video: bool = False) -> str:
+    if not MEOWAPITOKEN:
+        print("[Yuki API] Error: MEOWAPITOKEN is not set in environment or config.")
+        raise RuntimeError("MEOWAPITOKEN missing. Please set your API token in .env")
+
     os.makedirs(DOWNLOAD_DIR, exist_ok=True)
     ext = "mp4" if is_video else "mp3"
     req_type = "video" if is_video else "audio"
@@ -311,8 +340,11 @@ async def download_media(video_id: str, is_video: bool = False) -> str:
                 if os.path.exists(tmp_path) and os.path.getsize(tmp_path) > 10000:
                     os.replace(tmp_path, out_path)
                     return out_path
+            elif resp.status == 401:
+                raise RuntimeError("Invalid MEOWAPITOKEN. Please get a valid key from @MeowApiRobot")
     except Exception as e:
         print(f"[Yuki API] Stream error for {video_id}: {e}")
+        raise
     finally:
         if os.path.exists(tmp_path):
             try:
