@@ -9,10 +9,13 @@ from typing import Union
 import aiohttp
 
 try:
-    from youtubesearchpython.__future__ import VideosSearch, Playlist as PyPlaylist
+    from py_yt import VideosSearch, Playlist
 except ImportError:
-    VideosSearch = None
-    PyPlaylist = None
+    try:
+        from youtubesearchpython.__future__ import VideosSearch, Playlist
+    except ImportError:
+        VideosSearch = None
+        Playlist = None
 
 try:
     from youtube_search import YoutubeSearch
@@ -435,9 +438,9 @@ class YouTubeAPI:
             link = self.listbase + link
         clean = _clean_link(link)
 
-        if PyPlaylist:
+        if Playlist:
             try:
-                plist = PyPlaylist(clean)
+                plist = Playlist(clean)
                 while plist.hasMore():
                     await plist.getNext()
                     if len(plist.videos) >= limit:
