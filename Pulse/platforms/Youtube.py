@@ -24,9 +24,9 @@ try:
 except ImportError:
     yt_dlp = None
 
-API_URL = os.environ.get("MEOW_API_URL") or os.environ.get("MEOWAPI") or "https://music.yukiapi.site"
+API_URL = os.environ.get("MEOW_API_URL", "https://music.yukiapi.site")
 
-API_KEY = os.environ.get("MEOW_API_KEY") or os.environ.get("MEOWAPITOKEN") or "YOUR_API_KEY" ## Get This API KEY FROM TELEGRAM BOT USERNAME: @MeowApiRobot
+API_KEY = os.environ.get("MEOW_API_KEY", "YOUR_API_KEY") ## Get This API KEY FROM TELEGRAM BOT USERNAME: @MeowApiRobot
 DOWNLOAD_DIR = "downloads"
 
 _global_session: aiohttp.ClientSession | None = None
