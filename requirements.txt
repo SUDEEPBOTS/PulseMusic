@@ -1,4 +1,3 @@
-
 aiofiles
 aiohttp
 asyncio
@@ -8,7 +7,7 @@ ffmpeg-python
 gitpython
 hachoir
 heroku3
-httpx==0.28.1
+httpx<=0.27.2
 motor
 numpy
 pillow
@@ -25,7 +24,6 @@ spotipy
 tgcrypto
 unidecode
 yt-dlp
-git+https://github.com/yt-dlp/yt-dlp
 youtube-search
 youtube-search-python
 wget
