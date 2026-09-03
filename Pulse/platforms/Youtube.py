@@ -24,8 +24,9 @@ try:
 except ImportError:
     yt_dlp = None
 
-MEOWAPI = os.environ.get("MEOWAPI") or "https://music.yukiapi.site"
-MEOWAPITOKEN = os.environ.get("MEOWAPITOKEN")
+API_URL = os.environ.get("MEOW_API_URL") or os.environ.get("MEOWAPI") or "https://music.yukiapi.site"
+
+API_KEY = os.environ.get("MEOW_API_KEY") or os.environ.get("MEOWAPITOKEN") or "YOUR_API_KEY" ## Get This API KEY FROM TELEGRAM BOT USERNAME: @MeowApiRobot
 DOWNLOAD_DIR = "downloads"
 
 _global_session: aiohttp.ClientSession | None = None
@@ -314,9 +315,9 @@ async def _search_many(query: str, limit: int = 10) -> list[dict]:
 
 
 async def download_media(video_id: str, is_video: bool = False) -> str:
-    if not MEOWAPITOKEN:
-        print("[Yuki API] Error: MEOWAPITOKEN is not set in environment or config.")
-        raise RuntimeError("MEOWAPITOKEN missing. Please set your API token in .env")
+    if not API_KEY or API_KEY == "YOUR_API_KEY":
+        print("[Yuki API] Error: API_KEY is not set in environment or config.")
+        raise RuntimeError("API_KEY missing. Please set MEOW_API_KEY in .env or get from @MeowApiRobot")
 
     os.makedirs(DOWNLOAD_DIR, exist_ok=True)
     ext = "mp4" if is_video else "mp3"
@@ -327,7 +328,7 @@ async def download_media(video_id: str, is_video: bool = False) -> str:
         return out_path
 
     session = await get_session()
-    stream_url = f"{MEOWAPI}/stream/{video_id}?key={MEOWAPITOKEN}&type={req_type}&quality=360"
+    stream_url = f"{API_URL}/stream/{video_id}?key={API_KEY}&type={req_type}&quality=360"
 
     tmp_path = f"{out_path}.tmp.{random.randint(1000, 9999)}"
     try:
@@ -341,7 +342,7 @@ async def download_media(video_id: str, is_video: bool = False) -> str:
                     os.replace(tmp_path, out_path)
                     return out_path
             elif resp.status == 401:
-                raise RuntimeError("Invalid MEOWAPITOKEN. Please get a valid key from @MeowApiRobot")
+                raise RuntimeError("Invalid API_KEY. Please get a valid key from @MeowApiRobot")
     except Exception as e:
         print(f"[Yuki API] Stream error for {video_id}: {e}")
         raise
