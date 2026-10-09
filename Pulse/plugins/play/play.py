@@ -77,6 +77,7 @@ async def _send_blocked_warning(message: Message) -> None:
 from pytgcalls.exceptions import NoActiveGroupCall
 
 import config
+EMOJIS = getattr(config, "VALID_EMOJII", ["🔥", "💋", "💖", "✨", "🥰"])
 from Pulse import Apple, Resso, SoundCloud, Spotify, Telegram, YouTube, app
 from Pulse.core.call import Sagar
 from Pulse.utils import seconds_to_min, time_to_seconds
