@@ -1,96 +1,184 @@
-<h1 align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=timeGradient&height=250&section=header&text=PulseMusic&fontSize=80&animation=fadeIn&fontAlignY=35&desc=A%20Modern,%20Fast%20and%20Secure%20Telegram%20Music%20Bot&descAlignY=55&descAlign=50" />
-</h1>
+<div align="center">
+
+<img src="https://raw.githubusercontent.com/SUDEEPBOTS/PulseMusic/main/assets/banner.png" alt="PulseMusic Banner" width="100%">
 
 <p align="center">
-  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=600&size=26&pause=1000&color=00FFFB&center=true&vCenter=true&width=600&lines=Welcome+to+PulseMusic+Bot;A+Super+Fast+Telegram+Music+Bot;Built+With+Pyrogram+%26+PyTgCalls;Advanced+Security+Included;Deploy+Now+on+Render+or+Heroku" alt="Typing SVG" />
+  <img src="https://readme-typing-svg.herokuapp.com/?lines=PULSEMUSIC+—+ENTERPRISE+VOICE+CHAT+STREAMING;PYROGRAM+V2+%2B+PYTGCALLS+LOW-LATENCY+OPUS;MULTI-PLATFORM+RESOLVERS:+YOUTUBE,+SPOTIFY,+APPLE;BUILT+BY+SUDEEPBOTS+•+24/7+UPTIME+ENGINE&font=Fira+Code&weight=600&size=16&center=true&width=620&height=42&color=00F2FE" alt="Typing SVG" />
 </p>
 
-<p align="center">
-  <a href="https://github.com/SUDEEPBOTS/PulseMusic/stargazers"><img src="https://img.shields.io/github/stars/SUDEEPBOTS/PulseMusic?color=blue&logo=github&logoColor=white&style=for-the-badge" alt="Stars" /></a>
-  <a href="https://github.com/SUDEEPBOTS/PulseMusic/network/members"> <img src="https://img.shields.io/github/forks/SUDEEPBOTS/PulseMusic?color=blue&logo=github&logoColor=white&style=for-the-badge" /></a>
-  <a href="https://github.com/SUDEEPBOTS/PulseMusic/issues"> <img src="https://img.shields.io/github/issues/SUDEEPBOTS/PulseMusic?color=blue&logo=github&logoColor=white&style=for-the-badge" /></a>
-  <a href="https://t.me/Zcziiyy"><img src="https://img.shields.io/badge/Join-Support%20Group-blue.svg?style=for-the-badge&logo=Telegram"></a>
-</p>
+[![Python](https://img.shields.io/badge/Python-3.10%20%7C%203.11-3776AB?style=for-the-badge&logo=python&logoColor=white&labelColor=080a10)](https://www.python.org/)
+[![Pyrogram](https://img.shields.io/badge/Pyrogram-2.0.106-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white&labelColor=080a10)](https://docs.pyrogram.org/)
+[![PyTgCalls](https://img.shields.io/badge/PyTgCalls-Voice%20Engine-9d4edd?style=for-the-badge&logo=webrtc&logoColor=white&labelColor=080a10)](https://github.com/pytgcalls/pytgcalls)
+[![MongoDB](https://img.shields.io/badge/MongoDB-Atlas%20Motor-47A248?style=for-the-badge&logo=mongodb&logoColor=white&labelColor=080a10)](https://www.mongodb.com/)
+[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white&labelColor=080a10)](https://www.docker.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-F59E0B?style=for-the-badge&logo=opensourceinitiative&logoColor=white&labelColor=080a10)](./LICENSE)
+[![Telegram Support](https://img.shields.io/badge/Support-@DEVTAL-00f2fe?style=for-the-badge&logo=telegram&logoColor=white&labelColor=080a10)](https://t.me/DEVTAL)
 
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif" width="100%">
-</p>
+<br/>
 
-<h2 align="center"> ⚡️ ᴀᴡᴇsᴏᴍᴇ ғᴇᴀᴛᴜʀᴇs ⚡️ </h2>
+[🎮 Interactive Web Studio](index.html) • [🚀 Deploy on Heroku](https://dashboard.heroku.com/new?template=https://github.com/SUDEEPBOTS/PulseMusic) • [⚡ Deploy on Render](https://render.com/deploy?repo=https://github.com/SUDEEPBOTS/PulseMusic) • [💬 Support Chat](https://t.me/DEVTAL)
 
-<p align="center">
-  <img src="https://telegra.ph/file/0c997ddaf5b7e2cc45b4c.gif" width="300" />
-</p>
+</div>
 
-> 🎸 **PulseMusic** is packed with extreme features, fully configured for lag-free music playback in Telegram Voice Chats.
+---
 
-- **🔥 ʟᴀᴛᴇsᴛ ᴘʏʀᴏɢʀᴀᴍ & ᴘʏᴛɢᴄᴀʟʟs sᴜᴘᴘᴏʀᴛ:** Super stable streaming!
-- **🛡️ ᴀᴅᴠᴀɴᴄᴇᴅ sᴇᴄᴜʀɪᴛʏ:** RCE/Shell-injection blocks & NSFW filters.
-- **✨ ᴘʀᴇᴍɪᴜᴍ ᴜɪ:** Inline keyboards with modern custom emojis.
-- **♾️ sᴍᴀʀᴛ ᴀᴜᴛᴏᴘʟᴀʏ:** Never let the music stop! Auto-queues related songs.
-- **⚡️ ᴍᴏᴅᴇʀɴ & ʟɪɢʜᴛᴡᴇɪɢʜᴛ:** Optimized for speed, handling hundreds of concurrent playbacks.
-- **🚀 ʀᴇɴᴅᴇʀ & ʜᴇʀᴏᴋᴜ ʀᴇᴀᴅʏ:** Built-in keeping-alive web server for seamless free-tier hosting on Render & Heroku.
+## ⚡ What is PulseMusic?
 
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif" width="100%">
-</p>
+**PulseMusic** is a high-throughput, enterprise-grade Telegram Voice Chat & Video Streaming Bot built on **Pyrogram v2** and **PyTgCalls**. Designed for audiophiles and communities that demand crystal-clear **Opus 48kHz audio** with zero stutter, PulseMusic natively resolves links from YouTube, Spotify, Apple Music, SoundCloud, and direct Telegram audio/video files with millisecond stream handshakes.
 
-<h2 align="center"> 🚀 ᴅᴇᴘʟᴏʏᴍᴇɴᴛ 🚀 </h2>
+---
 
-<h3 align="center">☁️ ᴅᴇᴘʟᴏʏ ᴏɴ ʜᴇʀᴏᴋᴜ & ʀᴇɴᴅᴇʀ ☁️</h3>
+## ✨ Core Highlights & Architecture
 
-<p align="center">
-<a href="https://dashboard.heroku.com/new?template=https://github.com/SUDEEPBOTS/PulseMusic">
-  <img src="https://img.shields.io/badge/Deploy%20On%20Heroku-008000?style=for-the-badge&logo=heroku" width="200" height="45"/>
-</a>
-<a href="https://render.com/deploy?repo=https://github.com/SUDEEPBOTS/PulseMusic">
-  <img src="https://img.shields.io/badge/Deploy%20to%20Render-46E3B7?style=for-the-badge&logo=render&logoColor=white" width="200" height="45"/>
-</a>
-</p>
+- 🎧 **Audiophile Sound Quality**: Streams uncompressed audio using FFmpeg with native Opus transcoding at up to 320 kbps stereo.
+- 📺 **HD Video Streaming**: Full video chat playback with dynamic frame pacing and resolution scaling.
+- 🌐 **Multi-Platform Audio Resolvers**:
+  - **YouTube & YouTube Music**: Instant query token matching and live stream extraction.
+  - **Spotify Playlists & Albums**: Seamless metadata conversion and lossless downstream resolution.
+  - **Apple Music & SoundCloud**: Deep link scrapers with artist radio support.
+  - **Telegram Local Media**: Play any forwarded audio, voice message, or video document directly.
+- ♾️ **Smart Autoplay AI**: When a user queue finishes, PulseMusic analyzes recent track genres and automatically queues related songs without dropping the voice call.
+- 🛡️ **Anti-Flood & Channel Play Shield**: Dynamic rate limiting prevents spam; channel linking allows administrators to stream music from their channel directly into linked group voice chats.
+- 🌐 **Built-in Keepalive Web Server**: Integrated HTTP listener (`server.py`) ensures 100% 24/7 uptime on free-tier platforms like Render and Heroku without idling out.
+- 🌍 **Multi-Language Localization**: Full translation support for **English**, **Hindi**, **Punjabi**, and **Arabic**.
 
-<details>
-<summary><h3 align="left">💻 ᴅᴇᴘʟᴏʏ ᴏɴ ᴠᴘs / ʟᴏᴄᴀʟ</h3></summary>
-<br>
+---
 
-**1. Clone the Repository:**
+## 🔄 Audio Streaming Pipeline
+
+```mermaid
+flowchart LR
+    A["👤 User Command /play"] --> B{"🔍 URL or Query?"}
+    B -->|Spotify / Apple / Soundcloud| C["🌐 Platform Metadata Resolver"]
+    B -->|YouTube Search| D["⚡ YouTube Yt-Dlp Streamer"]
+    C --> D
+    D --> E["⚙️ FFmpeg Opus Transcoder (48kHz)"]
+    E --> F["🤖 PyTgCalls Assistant Voice Client"]
+    F --> G["🔊 Telegram Group Voice Chat"]
+    G --> H{"Queue Finished?"}
+    H -->|Autoplay ON| I["♾️ Smart Autoplay Recommender"]
+    I --> D
+```
+
+---
+
+## 🚀 Quick Start & Deployment
+
+### Method 1: Local / VPS (PM2 — 24/7 Recommended)
+
 ```bash
-git clone https://github.com/SUDEEPBOTS/PulseMusic
+# 1. Clone repository
+git clone https://github.com/SUDEEPBOTS/PulseMusic.git
 cd PulseMusic
-```
 
-**2. Install Dependencies:**
-```bash
-sudo apt-get update -y
-sudo apt-get upgrade -y
-sudo apt-get install python3-pip ffmpeg -y
-pip3 install -U -r requirements.txt
-```
+# 2. Setup Virtual Environment
+python3 -m venv venv
+source venv/bin/activate
 
-**3. Configure Environment:**
-```bash
+# 3. Install dependencies
+pip install --upgrade pip setuptools wheel
+pip install -r requirements.txt
+
+# 4. Configure credentials
 cp sample.env .env
-nano .env # Fill in your API_ID, API_HASH, BOT_TOKEN, MONGO_DB_URI
+nano .env
+
+# 5. Start with PM2
+pm2 start "bash start" --name PulseMusic
+pm2 save
+pm2 startup
 ```
 
-**4. Start the Bot:**
+### Method 2: Docker & Docker Compose
+
 ```bash
-python3 -m Pulse
-# OR keep it running in background
-tmux new-session -d -s pulsebot "bash start"
+# 1. Configure environment
+cp sample.env .env
+nano .env
+
+# 2. Build and launch container stack
+docker compose up -d --build
+
+# 3. View live streaming logs
+docker compose logs -f pulsemusic
 ```
-</details>
 
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif" width="100%">
-</p>
+### Method 3: One-Click Cloud Hosting
 
-<h2 align="center"> 📞 sᴜᴘᴘᴏʀᴛ ᴀɴᴅ ᴜᴘᴅᴀᴛᴇs 📞 </h2>
+| Platform | Deployment Button | Configuration File |
+| :--- | :---: | :--- |
+| **Heroku** | [![Deploy to Heroku](https://img.shields.io/badge/Deploy%20on-Heroku-7928CA?style=for-the-badge&logo=heroku&logoColor=white)](https://dashboard.heroku.com/new?template=https://github.com/SUDEEPBOTS/PulseMusic) | [`heroku.yml`](./heroku.yml) / [`Procfile`](./Procfile) |
+| **Render** | [![Deploy to Render](https://img.shields.io/badge/Deploy%20on-Render-46E3B7?style=for-the-badge&logo=render&logoColor=white)](https://render.com/deploy?repo=https://github.com/SUDEEPBOTS/PulseMusic) | [`Dockerfile`](./Dockerfile) |
 
-<p align="center">
-  <a href="https://t.me/Zcziiyy"><img src="https://img.shields.io/badge/Join%20Support%20Group-blue.svg?style=for-the-badge&logo=Telegram" width="250"></a>
-</p>
+---
 
-<p align="center">
-  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=600&size=20&pause=1000&color=F700FF&center=true&vCenter=true&width=435&lines=Made+with+❤️+by+SUDEEPBOTS" alt="Made by" />
-</p>
+## ⚙️ Environment Variables
+
+Create a `.env` file in the project root:
+
+| Variable | Required | Default | Description |
+| :--- | :---: | :---: | :--- |
+| `API_ID` | **Yes** | — | Telegram API ID from [my.telegram.org](https://my.telegram.org) |
+| `API_HASH` | **Yes** | — | Telegram API Hash from [my.telegram.org](https://my.telegram.org) |
+| `BOT_TOKEN` | **Yes** | — | Telegram Bot Token from [@BotFather](https://t.me/BotFather) |
+| `OWNER_ID` | **Yes** | — | Numeric User ID of the primary administrator |
+| `LOGGER_ID` | **Yes** | — | Telegram Channel/Group ID (`-100xxx`) for playback & error logs |
+| `MONGO_DB_URI` | **Yes** | — | MongoDB Atlas connection string (`mongodb+srv://...`) |
+| `STRING_SESSION` | **Yes** | — | Pyrogram v2 string session for the assistant account |
+| `SPOTIFY_CLIENT_ID` | No | — | Spotify Developer Client ID (for high-speed playlist resolution) |
+| `SPOTIFY_CLIENT_SECRET` | No | — | Spotify Developer Client Secret |
+| `DURATION_LIMIT` | No | `54000` | Maximum song duration limit in minutes |
+| `AUTO_LEAVING_ASSISTANT`| No | `False` | Assistant auto-leaves voice chat when idle |
+| `AUTO_SUGGESTION_MODE` | No | `True` | Enable continuous smart autoplay when queue is empty |
+| `CLEANMODE_MINS` | No | `5` | Minutes after which command messages are pruned |
+| `RENDER` | No | `False` | Set `True` on Render to launch background keepalive HTTP ping |
+
+---
+
+## 🤖 Command Reference
+
+### 🎵 Playback Commands
+| Command | Permission | Description |
+| :--- | :---: | :--- |
+| `/play <query/url>` | Everyone | Plays the requested song in group voice chat |
+| `/vplay <query/url>` | Everyone | Streams high-definition video in voice chat |
+| `/cplay <query/url>` | Admins | Plays music in the linked channel's voice chat |
+| `/pause` | Admins | Pauses the current audio/video stream |
+| `/resume` | Admins | Resumes the paused stream |
+| `/skip` | Admins | Skips current song to next queue item |
+| `/end` or `/stop` | Admins | Stops playback, clears queue, and leaves voice chat |
+| `/queue` | Everyone | Displays the active queue and upcoming tracks |
+| `/seek <seconds>` | Admins | Fast-forwards or rewinds active track |
+| `/speed <0.5 - 2.0>` | Admins | Adjusts stream playback speed |
+
+### 🛠️ Bot Management & Utility Commands
+| Command | Permission | Description |
+| :--- | :---: | :--- |
+| `/start` | Everyone | Opens interactive inline menu with language selectors |
+| `/help` | Everyone | Comprehensive user guide and command catalog |
+| `/ping` | Everyone | Checks bot latency and voice chat buffer response |
+| `/stats` | Everyone | Shows active chats, assistant health, and system specs |
+| `/settings` | Admins | Configures group-level audio quality, cleanmode, and voting |
+| `/addsudo <user_id>` | Owner Only | Grants sudo permissions to an operator |
+| `/sudolist` | Sudo / Owner | Lists all authorized sudo operators |
+
+---
+
+## 🛡️ Operational Best Practices
+
+> [!TIP]
+> **Assistant Userbot Recommendations:**
+> - Use a secondary Telegram account for your assistant `STRING_SESSION`.
+> - Ensure the assistant account is an admin in the target group with voice chat privileges.
+> - For large multi-chat deployments, configure `STRING_SESSION2` and `STRING_SESSION3` to load-balance across multiple assistant clients.
+
+---
+
+## 📄 License & Attribution
+
+This project is licensed under the **MIT License** — see the [`LICENSE`](./LICENSE) file for details.
+
+Copyright © 2026 **[SUDEEPBOTS](https://github.com/SUDEEPBOTS)**. All Rights Reserved.
+
+- **Developer & Owner**: [@Zcziiyy](https://t.me/Zcziiyy)
+- **Community Chat**: [@DEVTAL](https://t.me/DEVTAL)

@@ -1,103 +1,76 @@
-# Copyright (c) 2025 @SUDEEPBOTS <HellfireDevs>
-# Location: delhi,noida
-#
-# All rights reserved.
-#
-# This code is the intellectual SUDEEPBOTS.
-# You are not allowed to copy, modify, redistribute, or use this
-# code for commercial or personal projects without explicit permission.
-#
-# Allowed:
-# - Forking for personal learning
-# - Submitting improvements via pull requests
-#
-# Not Allowed:
-# - Claiming this code as your own
-# - Re-uploading without credit or permission
-# - Selling or using commercially
-#
-# Contact for permissions:
-# Email: sudeepgithub@gmail.com
+# --------------------------------------------------------------------------
+# Copyright (c) 2026 SUDEEPBOTS. All Rights Reserved.
+# PulseMusic — High-Performance Telegram Voice Chat Music & Video Engine
+# Licensed under the MIT License. See LICENSE in the project root for details.
+# --------------------------------------------------------------------------
 
 import re
 from os import getenv
-
 from dotenv import load_dotenv
 from pyrogram import filters
 
 load_dotenv()
 
+# ── Telegram API Credentials ───────────────────────────────────────────────
+API_ID = int(getenv("API_ID", "0"))
+API_HASH = getenv("API_HASH", "")
+BOT_TOKEN = getenv("BOT_TOKEN", "")
+BOT_USERNAME = getenv("BOT_USERNAME", "")
 
-API_ID = int(getenv("API_ID", "16457832"))
+# ── Database ───────────────────────────────────────────────────────────────
+MONGO_DB_URI = getenv("MONGO_DB_URI", "")
 
-API_HASH = getenv("API_HASH", "3030874d0befdb5d05597deacc3e83ab")
-
-BOT_TOKEN = getenv("BOT_TOKEN", "7000859933:AAEnaU9196qHT0bSyaoqROwmc_XCImYhP4E")#
-
-MONGO_DB_URI = getenv("MONGO_DB_URI", "mongodb+srv://PulseNew:Mongo@cluster0.zllsvlo.mongodb.net/?appName=Cluster0")
-
+# ── Playback Limits ────────────────────────────────────────────────────────
 DURATION_LIMIT_MIN = int(getenv("DURATION_LIMIT", 54000))
+SONG_DOWNLOAD_DURATION = int(getenv("SONG_DOWNLOAD_DURATION_LIMIT", "54000"))
 
-SONG_DOWNLOAD_DURATION = int(
-    getenv("SONG_DOWNLOAD_DURATION_LIMIT", "54000")
-)
+# ── Owner & Logging ────────────────────────────────────────────────────────
+LOGGER_ID = int(getenv("LOGGER_ID", "0"))
+OWNER_ID = int(getenv("OWNER_ID", "0"))
 
-LOGGER_ID = int(getenv("LOGGER_ID", "-1002022622141"))
-
-OWNER_ID = int(getenv("OWNER_ID", "6625936112"))
-
-BOT_USERNAME = getenv("BOT_USERNAME" , "@Syn_Ixbot")
-
+# ── Command & Web Server ───────────────────────────────────────────────────
 COMMAND_HANDLER = getenv("COMMAND_HANDLER", "! / .").split() + [""]
-
 HEROKU_APP_NAME = getenv("HEROKU_APP_NAME")
-
 HEROKU_API_KEY = getenv("HEROKU_API_KEY")
-
 RENDER = getenv("RENDER", "False").lower() == "true"
-
 PING_URL = getenv("PING_URL", "")
 
+# ── Upstream Repository ────────────────────────────────────────────────────
 UPSTREAM_REPO = getenv(
     "UPSTREAM_REPO",
-    "https://github.com/TrickBySaqib/PulseMusic",
+    "https://github.com/SUDEEPBOTS/PulseMusic",
 )
 UPSTREAM_BRANCH = getenv("UPSTREAM_BRANCH", "main")
-GIT_TOKEN = getenv(
-    "GIT_TOKEN", ""
-)  # Fill this variable if your upstream repository is private
+GIT_TOKEN = getenv("GIT_TOKEN", "")
 
+# ── Support & Community ────────────────────────────────────────────────────
 SUPPORT_CHANNEL = getenv("SUPPORT_CHANNEL", "https://t.me/Zcziiyy")
 SUPPORT_CHAT = getenv("SUPPORT_CHAT", "https://t.me/DEVTAL")
 
-
+# ── Assistant & Autoplay ───────────────────────────────────────────────────
 AUTO_LEAVING_ASSISTANT = bool(getenv("AUTO_LEAVING_ASSISTANT", False))
 AUTO_SUGGESTION_MODE = getenv("AUTO_SUGGESTION_MODE", "True")
-AUTO_SUGGESTION_TIME = int(
-    getenv("AUTO_SUGGESTION_TIME", "500"))
+AUTO_SUGGESTION_TIME = int(getenv("AUTO_SUGGESTION_TIME", "500"))
 
+# ── Music Platform API Keys ────────────────────────────────────────────────
 SPOTIFY_CLIENT_ID = getenv("SPOTIFY_CLIENT_ID", None)
 SPOTIFY_CLIENT_SECRET = getenv("SPOTIFY_CLIENT_SECRET", None)
 
-
-
 PLAYLIST_FETCH_LIMIT = int(getenv("PLAYLIST_FETCH_LIMIT", 25))
-
-CLEANMODE_DELETE_MINS = int(
-    getenv("CLEANMODE_MINS", "5"))
+CLEANMODE_DELETE_MINS = int(getenv("CLEANMODE_MINS", "5"))
 
 TG_AUDIO_FILESIZE_LIMIT = int(getenv("TG_AUDIO_FILESIZE_LIMIT", 21474836480))
 TG_VIDEO_FILESIZE_LIMIT = int(getenv("TG_VIDEO_FILESIZE_LIMIT", 21474836480))
 
 BASE_URL = getenv("BASE_URL", "https://babyapi.pro")
 API_KEY = getenv("API_KEY", None)
-# Get your pyrogram v2 session from @Shsusu_bot on Telegram
-STRING1 = getenv("STRING_SESSION", "BQD7IGgARZlAB1lCIrHI1TFZlaT1oQafB_ADnYhMLFcT3N5-utYkkPHx8BZHxege07D0DRHke2f-0PDPlKWeV6Us4AIi7hF2rtuU7yiEC_I5sHdqeN958ug4XF_9pHCwUqmke12c5csZa6MCIJ8ooGCg8Ndo5ABvtvxDAOVMyFOayk47iaJoYzBN5JQpmozzd_euToUIuWzpTmt7pjJ-6XB04u4RTE_MY6Ox3ey9jqwUKwRIJAdgb_4QRXWDyqYOSGjrWr1putbJC4yVx99En0EUcesfHmMzo-wFWg9oqhU382AqmDbBIPxpl2KbWsbiTqIWLiGhKgFu0_Xi59nb-7N3Ij_qowAAAAHFA_aoAA")
+
+# ── Pyrogram String Sessions (Assistants 1-5) ──────────────────────────────
+STRING1 = getenv("STRING_SESSION", None)
 STRING2 = getenv("STRING_SESSION2", None)
 STRING3 = getenv("STRING_SESSION3", None)
 STRING4 = getenv("STRING_SESSION4", None)
 STRING5 = getenv("STRING_SESSION5", None)
-
 
 BANNED_USERS = filters.user()
 adminlist = {}
@@ -109,8 +82,7 @@ chatstats = {}
 userstats = {}
 clean = {}
 
-autoclean = []
-
+# ── UI Images ──────────────────────────────────────────────────────────────
 START_IMG_URL = getenv(
     "START_IMG_URL", "https://files.catbox.moe/kzcoir.jpg"
 )

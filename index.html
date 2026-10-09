@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PulseMusic — High-Performance Telegram Voice Chat Audio Engine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #080a10;
+      --bg-card: rgba(16, 20, 32, 0.75);
+      --bg-glass: rgba(26, 32, 52, 0.55);
+      --neon-cyan: #00f2fe;
+      --neon-purple: #9d4edd;
+      --neon-pink: #ff2a85;
+      --neon-blue: #3b82f6;
+      --neon-green: #10b981;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-glow: rgba(0, 242, 254, 0.35);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --font-ui: 'Outfit', -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(157, 78, 221, 0.15) 0%, transparent 45%),
+        radial-gradient(circle at 90% 80%, rgba(0, 242, 254, 0.12) 0%, transparent 45%),
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+      color: var(--text-main);
+      font-family: var(--font-ui);
+      min-height: 100vh;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 5rem;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border-subtle);
+      margin-bottom: 2.5rem;
+      flex-wrap: wrap;
+      gap: 1.25rem;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .brand-logo .logo-icon {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      box-shadow: 0 0 25px rgba(0, 242, 254, 0.4);
+    }
+
+    .brand-logo h1 {
+      font-size: 1.7rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      background: linear-gradient(90deg, #00f2fe, #bd93f9, #ff79c6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-badges {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .badge-pill {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      padding: 0.4rem 0.95rem;
+      border-radius: 9999px;
+      background: var(--bg-glass);
+      border: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+
+    .badge-pill:hover {
+      border-color: var(--neon-cyan);
+      color: var(--neon-cyan);
+      transform: translateY(-2px);
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      background-color: var(--neon-green);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--neon-green);
+      animation: pulse 2s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      padding: 0.35rem 1.1rem;
+      border-radius: 9999px;
+      background: rgba(0, 242, 254, 0.1);
+      border: 1px solid rgba(0, 242, 254, 0.4);
+      color: var(--neon-cyan);
+      margin-bottom: 1.25rem;
+    }
+
+    .hero h2 {
+      font-size: 3.2rem;
+      font-weight: 900;
+      line-height: 1.15;
+      margin-bottom: 1rem;
+      letter-spacing: -0.5px;
+    }
+
+    .hero h2 span {
+      background: linear-gradient(135deg, #00f2fe 0%, #a855f7 50%, #ec4899 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      color: var(--text-muted);
+      max-width: 720px;
+      margin: 0 auto;
+      font-size: 1.15rem;
+    }
+
+    /* Waveform Canvas */
+    .visualizer-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 1.5rem;
+      margin-bottom: 2.5rem;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+      position: relative;
+      overflow: hidden;
+    }
+
+    canvas#waveformCanvas {
+      width: 100%;
+      height: 110px;
+      display: block;
+    }
+
+    /* Main Console Grid */
+    .console-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    @media (max-width: 950px) {
+      .console-grid { grid-template-columns: 1fr; }
+      .hero h2 { font-size: 2.4rem; }
+    }
+
+    .panel-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.25rem;
+    }
+
+    .panel-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    /* Player Console */
+    .now-playing-wrap {
+      display: flex;
+      gap: 1.25rem;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 1.25rem;
+    }
+
+    .album-art {
+      width: 90px;
+      height: 90px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #1e1b4b, #312e81);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.2rem;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+      flex-shrink: 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .track-info {
+      overflow: hidden;
+      flex-grow: 1;
+    }
+
+    .track-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .track-artist {
+      font-size: 0.9rem;
+      color: var(--neon-cyan);
+      margin-bottom: 0.5rem;
+    }
+
+    .track-badges {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .mini-badge {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 6px;
+      background: rgba(0, 242, 254, 0.1);
+      border: 1px solid rgba(0, 242, 254, 0.3);
+      color: var(--neon-cyan);
+    }
+
+    /* Scrubber */
+    .progress-bar-wrap {
+      margin-bottom: 1.25rem;
+    }
+
+    .scrubber {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 999px;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .scrubber-fill {
+      width: 45%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+      border-radius: 999px;
+      box-shadow: 0 0 10px var(--neon-cyan);
+    }
+
+    .time-labels {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 0.4rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* Controls */
+    .controls-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .ctrl-btn {
+      background: var(--bg-glass);
+      border: 1px solid var(--border-subtle);
+      color: #fff;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: all 0.2s;
+    }
+
+    .ctrl-btn:hover {
+      border-color: var(--neon-cyan);
+      box-shadow: 0 0 15px rgba(0, 242, 254, 0.3);
+      transform: scale(1.05);
+    }
+
+    .ctrl-btn.play-btn {
+      width: 54px;
+      height: 54px;
+      background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+      color: #000;
+      font-size: 1.4rem;
+      border: none;
+      box-shadow: 0 0 20px rgba(0, 242, 254, 0.4);
+    }
+
+    /* Platform Resolver */
+    .platform-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .p-tab {
+      background: var(--bg-glass);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      padding: 0.45rem 0.9rem;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .p-tab.active {
+      background: rgba(0, 242, 254, 0.15);
+      border-color: var(--neon-cyan);
+      color: var(--neon-cyan);
+    }
+
+    .search-input-wrap {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .search-input {
+      flex-grow: 1;
+      background: rgba(8, 10, 16, 0.85);
+      border: 1px solid var(--border-subtle);
+      color: #fff;
+      padding: 0.75rem 1rem;
+      border-radius: 12px;
+      font-family: var(--font-ui);
+      font-size: 0.95rem;
+      outline: none;
+    }
+
+    .search-input:focus {
+      border-color: var(--neon-cyan);
+      box-shadow: 0 0 15px rgba(0, 242, 254, 0.2);
+    }
+
+    .btn-search {
+      background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+      color: #000;
+      font-weight: 700;
+      border: none;
+      padding: 0 1.5rem;
+      border-radius: 12px;
+      cursor: pointer;
+      font-family: var(--font-ui);
+      transition: opacity 0.2s;
+    }
+
+    .btn-search:hover { opacity: 0.9; }
+
+    /* Results */
+    .results-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .res-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 0.75rem 1rem;
+      transition: all 0.2s;
+    }
+
+    .res-item:hover {
+      border-color: var(--border-glow);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .btn-play-mini {
+      background: rgba(0, 242, 254, 0.15);
+      border: 1px solid var(--neon-cyan);
+      color: var(--neon-cyan);
+      padding: 0.35rem 0.85rem;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      font-family: var(--font-mono);
+      transition: all 0.2s;
+    }
+
+    .btn-play-mini:hover {
+      background: var(--neon-cyan);
+      color: #000;
+    }
+
+    /* Commands Table */
+    .cmd-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+    }
+
+    .cmd-table th, .cmd-table td {
+      padding: 0.85rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .cmd-table th {
+      background: rgba(255, 255, 255, 0.02);
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--neon-cyan);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .cmd-badge {
+      font-family: var(--font-mono);
+      background: rgba(0, 242, 254, 0.12);
+      border: 1px solid rgba(0, 242, 254, 0.4);
+      color: var(--neon-cyan);
+      padding: 0.25rem 0.55rem;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      display: inline-block;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: rgba(16, 185, 129, 0.95);
+      color: #000;
+      font-weight: 700;
+      padding: 0.75rem 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 1000;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 5rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      font-size: 0.88rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Header -->
+    <header>
+      <a href="#" class="brand-logo">
+        <div class="logo-icon">🎵</div>
+        <div>
+          <h1>PULSEMUSIC</h1>
+          <p style="font-size: 0.78rem; color: var(--text-muted); font-family: var(--font-mono);">
+            PYROGRAM 2.0 • PYTGCALLS • LOW-LATENCY OPUS
+          </p>
+        </div>
+      </a>
+      <div class="nav-badges">
+        <div class="badge-pill">
+          <span class="pulse-dot"></span>
+          <span>VC LATENCY: 14ms (OPTIMAL)</span>
+        </div>
+        <a href="https://github.com/SUDEEPBOTS/PulseMusic" class="badge-pill" target="_blank">
+          <span>GITHUB REPO</span>
+        </a>
+        <a href="https://t.me/Zcziiyy" class="badge-pill" target="_blank" style="color: var(--neon-cyan); border-color: rgba(0,242,254,0.4);">
+          <span>SUPPORT: @Zcziiyy</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-tag">ENTERPRISE TELEGRAM VOICE CHAT STREAMING</div>
+      <h2>Pure Audio Fidelity for <span>Telegram Voice Chats</span></h2>
+      <p>
+        High-throughput multi-platform audio resolver supporting YouTube Music, Spotify, Apple Music, and SoundCloud streaming with zero packet loss.
+      </p>
+    </section>
+
+    <!-- Live Reactive Waveform Canvas -->
+    <div class="visualizer-card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+        <span style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--neon-cyan);">LIVE OPUS AUDIO STREAM BUFFER</span>
+        <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted);">48,000 Hz • 320 kbps Stereo</span>
+      </div>
+      <canvas id="waveformCanvas"></canvas>
+    </div>
+
+    <!-- Main Console Grid -->
+    <div class="console-grid">
+      <!-- Player Card -->
+      <div class="panel-card">
+        <div class="panel-header">
+          <div class="panel-title"><span>📻</span> Voice Chat Playback Console</div>
+          <span class="mini-badge" style="background: rgba(16,185,129,0.15); border-color: #10b981; color: #10b981;">STREAMING ACTIVE</span>
+        </div>
+
+        <div class="now-playing-wrap">
+          <div class="album-art" id="playerArt">🎧</div>
+          <div class="track-info">
+            <div class="track-title" id="playerTitle">Tum Hi Ho (Lofi Remix)</div>
+            <div class="track-artist" id="playerArtist">Arijit Singh • T-Series</div>
+            <div class="track-badges">
+              <span class="mini-badge">YouTube 320kbps</span>
+              <span class="mini-badge" id="playerQueueCount">Queue: 4 tracks</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="progress-bar-wrap">
+          <div class="scrubber" onclick="seekTrack(event)">
+            <div class="scrubber-fill" id="scrubberFill"></div>
+          </div>
+          <div class="time-labels">
+            <span id="timeElapsed">01:42</span>
+            <span id="timeTotal">03:48</span>
+          </div>
+        </div>
+
+        <div class="controls-row">
+          <button class="ctrl-btn" onclick="prevTrack()" title="Previous Track">⏮</button>
+          <button class="ctrl-btn play-btn" id="btnPlay" onclick="togglePlay()" title="Play / Pause">⏸</button>
+          <button class="ctrl-btn" onclick="nextTrack()" title="Next Track">⏭</button>
+          <button class="ctrl-btn" onclick="toggleLoop()" id="btnLoop" title="Loop Mode">🔁</button>
+        </div>
+      </div>
+
+      <!-- Multi-Platform Search Explorer -->
+      <div class="panel-card">
+        <div class="panel-header">
+          <div class="panel-title"><span>🔍</span> Multi-Platform Resolver</div>
+        </div>
+
+        <div class="platform-tabs">
+          <button class="p-tab active" onclick="switchPlatform('YouTube', this)">YouTube</button>
+          <button class="p-tab" onclick="switchPlatform('Spotify', this)">Spotify</button>
+          <button class="p-tab" onclick="switchPlatform('Apple Music', this)">Apple Music</button>
+          <button class="p-tab" onclick="switchPlatform('SoundCloud', this)">SoundCloud</button>
+        </div>
+
+        <div class="search-input-wrap">
+          <input type="text" id="searchInput" class="search-input" placeholder="Search track name or paste song URL..." value="Kesariya" onkeydown="if(event.key==='Enter') searchMusic()">
+          <button class="btn-search" onclick="searchMusic()">Search</button>
+        </div>
+
+        <div class="results-list" id="resultsList">
+          <!-- Rendered via JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Commands Table -->
+    <div class="panel-card">
+      <div class="panel-header">
+        <div class="panel-title"><span>⚡</span> Essential Voice Chat Commands</div>
+      </div>
+      <table class="cmd-table">
+        <thead>
+          <tr>
+            <th>Command</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Usage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="cmd-badge">/play &lt;query&gt;</span></td>
+            <td>Audio Stream</td>
+            <td>Plays requested track in group voice chat via YouTube/Spotify/Apple.</td>
+            <td><code>/play Kesariya</code></td>
+          </tr>
+          <tr>
+            <td><span class="cmd-badge">/vplay &lt;query&gt;</span></td>
+            <td>Video Stream</td>
+            <td>Streams high-definition video directly to group video chat.</td>
+            <td><code>/vplay Chaleya</code></td>
+          </tr>
+          <tr>
+            <td><span class="cmd-badge">/pause</span></td>
+            <td>Admin</td>
+            <td>Pauses active stream in the voice chat.</td>
+            <td><code>/pause</code></td>
+          </tr>
+          <tr>
+            <td><span class="cmd-badge">/resume</span></td>
+            <td>Admin</td>
+            <td>Resumes paused playback.</td>
+            <td><code>/resume</code></td>
+          </tr>
+          <tr>
+            <td><span class="cmd-badge">/skip</span></td>
+            <td>Admin</td>
+            <td>Skips currently playing song to next queue item.</td>
+            <td><code>/skip</code></td>
+          </tr>
+          <tr>
+            <td><span class="cmd-badge">/end</span></td>
+            <td>Admin</td>
+            <td>Stops voice chat playback and clears the playlist queue.</td>
+            <td><code>/end</code></td>
+          </tr>
+          <tr>
+            <td><span class="cmd-badge">/queue</span></td>
+            <td>Everyone</td>
+            <td>Displays active queue of upcoming tracks.</td>
+            <td><code>/queue</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <p>
+        🎵 <b>PulseMusic</b> — Built by <b>SUDEEPBOTS</b> • Licensed under <b>MIT</b>.
+      </p>
+      <p style="font-size: 0.78rem; margin-top: 0.5rem; font-family: var(--font-mono);">
+        Powered by Pyrogram v2 &amp; PyTgCalls • Optimized for 24/7 Voice Chat Uptime.
+      </p>
+    </footer>
+  </div>
+
+  <div id="toast" class="toast">Action processed! ✅</div>
+
+  <script>
+    // Live Canvas Audio Visualizer
+    const canvas = document.getElementById('waveformCanvas');
+    const ctx = canvas.getContext('2d');
+    let isPlaying = true;
+    let animId;
+
+    function resizeCanvas() {
+      canvas.width = canvas.parentElement.clientWidth - 48;
+      canvas.height = 110;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    let bars = Array.from({ length: 64 }, () => Math.random() * 0.8 + 0.2);
+
+    function drawVisualizer() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const barWidth = (canvas.width / bars.length) - 3;
+      
+      for (let i = 0; i < bars.length; i++) {
+        if (isPlaying) {
+          bars[i] += (Math.random() - 0.5) * 0.15;
+          if (bars[i] < 0.1) bars[i] = 0.1;
+          if (bars[i] > 1.0) bars[i] = 1.0;
+        } else {
+          bars[i] *= 0.95;
+        }
+
+        const h = bars[i] * (canvas.height * 0.85);
+        const x = i * (barWidth + 3);
+        const y = canvas.height - h;
+
+        const grad = ctx.createLinearGradient(0, y, 0, canvas.height);
+        grad.addColorStop(0, '#00f2fe');
+        grad.addColorStop(0.5, '#9d4edd');
+        grad.addColorStop(1, '#ff2a85');
+
+        ctx.fillStyle = grad;
+        ctx.shadowColor = 'rgba(0, 242, 254, 0.4)';
+        ctx.shadowBlur = 8;
+        ctx.fillRect(x, y, barWidth, h);
+      }
+      animId = requestAnimationFrame(drawVisualizer);
+    }
+    drawVisualizer();
+
+    // Player State
+    let currentTrackIdx = 0;
+    const tracks = [
+      { title: "Tum Hi Ho (Lofi Remix)", artist: "Arijit Singh • T-Series", duration: "03:48", icon: "🎧" },
+      { title: "Kesariya (Audio Stream)", artist: "Arijit Singh, Pritam", duration: "04:28", icon: "🔥" },
+      { title: "Chaleya (Jawan)", artist: "Arijit Singh, Anirudh", duration: "03:20", icon: "✨" },
+      { title: "Apna Bana Le (Bhediya)", artist: "Arijit Singh, Sachin-Jigar", duration: "04:12", icon: "🌙" }
+    ];
+
+    function togglePlay() {
+      isPlaying = !isPlaying;
+      document.getElementById('btnPlay').textContent = isPlaying ? '⏸' : '▶';
+      showToast(isPlaying ? "Stream resumed! ▶" : "Stream paused! ⏸");
+    }
+
+    function nextTrack() {
+      currentTrackIdx = (currentTrackIdx + 1) % tracks.length;
+      updatePlayer();
+      showToast("Skipped to next track! ⏭");
+    }
+
+    function prevTrack() {
+      currentTrackIdx = (currentTrackIdx - 1 + tracks.length) % tracks.length;
+      updatePlayer();
+      showToast("Returned to previous track! ⏮");
+    }
+
+    function updatePlayer() {
+      const t = tracks[currentTrackIdx];
+      document.getElementById('playerTitle').textContent = t.title;
+      document.getElementById('playerArtist').textContent = t.artist;
+      document.getElementById('timeTotal').textContent = t.duration;
+      document.getElementById('playerArt').textContent = t.icon;
+    }
+
+    function toggleLoop() {
+      const b = document.getElementById('btnLoop');
+      b.style.borderColor = b.style.borderColor === 'rgb(0, 242, 254)' ? 'rgba(255, 255, 255, 0.08)' : 'rgb(0, 242, 254)';
+      showToast("Loop mode toggled! 🔁");
+    }
+
+    function seekTrack(e) {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const pct = (e.clientX - rect.left) / rect.width;
+      document.getElementById('scrubberFill').style.width = (pct * 100) + '%';
+      showToast("Seek position updated! ⏩");
+    }
+
+    // Platform Search Demo
+    let activePlatform = "YouTube";
+    function switchPlatform(plat, btn) {
+      activePlatform = plat;
+      document.querySelectorAll('.p-tab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      searchMusic();
+    }
+
+    function searchMusic() {
+      const q = document.getElementById('searchInput').value.trim() || "Kesariya";
+      const results = [
+        { title: `${q} - Official Voice Chat Stream`, duration: "04:28", bit: "320kbps" },
+        { title: `${q} (Remix & Extended Instrumental)`, duration: "05:14", bit: "320kbps" },
+        { title: `${q} - Acoustic Live Session`, duration: "03:52", bit: "256kbps" }
+      ];
+
+      const list = document.getElementById('resultsList');
+      list.innerHTML = results.map(r => `
+        <div class="res-item">
+          <div>
+            <div style="font-weight: 700; font-size: 0.95rem;">${r.title}</div>
+            <div style="font-size: 0.8rem; color: var(--text-muted); font-family: var(--font-mono);">
+              ${activePlatform} • ${r.duration} • Opus ${r.bit}
+            </div>
+          </div>
+          <button class="btn-play-mini" onclick="playSearchResult('${r.title}')">▶ Play to VC</button>
+        </div>
+      `).join('');
+    }
+
+    function playSearchResult(title) {
+      document.getElementById('playerTitle').textContent = title;
+      document.getElementById('playerArtist').textContent = activePlatform + " Audio Resolver";
+      isPlaying = true;
+      document.getElementById('btnPlay').textContent = '⏸';
+      showToast(`Playing '${title}' to Voice Chat! 🎵`);
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2500);
+    }
+
+    // Init
+    searchMusic();
+  </script>
+</body>
+</html>

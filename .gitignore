@@ -1,13 +1,35 @@
+# Byte-compiled / optimized / DLL files
 __pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
 venv/
 myenv/
+.venv/
+env/
+
+# Environment and secrets
 .env
-database/
-downloads/
-cache/
+.env.*
+!.env.example
 *.session
 *.session-journal
+*.session-shm
+*.session-wal
+
+# Storage & Cache
+downloads/
+cache/
+database/
+*.log
 log.txt
 nohup.out
-*.json
+logs/
+
+# Build & OS
 node_modules/
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

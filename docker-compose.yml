@@ -1,0 +1,32 @@
+# --------------------------------------------------------------------------
+# Copyright (c) 2026 SUDEEPBOTS. All Rights Reserved.
+# PulseMusic — High-Performance Telegram Voice Chat Music & Video Engine
+# Licensed under the MIT License. See LICENSE in the project root for details.
+# --------------------------------------------------------------------------
+
+version: '3.8'
+
+services:
+  pulsemusic:
+    build: .
+    container_name: pulsemusic_bot
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - ./downloads:/app/downloads
+      - ./cache:/app/cache
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:6.0
+    container_name: pulsemusic_mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
